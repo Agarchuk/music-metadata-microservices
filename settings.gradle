@@ -1,0 +1,4 @@
+rootProject.name = 'music-metadata-microservices'
+
+include 'resource-service'
+include 'song-service'
