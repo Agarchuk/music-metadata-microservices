@@ -12,8 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface SongMapper {
 
-    SongCreateResponse mapToResourceUploadResponse(Long id);
-    SongDTO mapToResourceUploadResponse(Song song);
+    SongDTO mapToSongDTO(Song song);
 
     default SongDeleteResponse mapToResourcesDeleteResponse(List<Long> ids) {
         return new SongDeleteResponse(ids);

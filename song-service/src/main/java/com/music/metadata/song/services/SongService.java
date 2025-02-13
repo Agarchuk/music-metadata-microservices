@@ -2,6 +2,7 @@ package com.music.metadata.song.services;
 
 import com.music.metadata.song.dtos.SongCreateRequest;
 import com.music.metadata.song.dtos.SongCreateResponse;
+import com.music.metadata.song.dtos.SongDTO;
 import com.music.metadata.song.dtos.SongDeleteResponse;
 import com.music.metadata.song.exceptions.EntityAlreadyExistsException;
 import com.music.metadata.song.exceptions.ResourceNotFoundException;
@@ -39,9 +40,10 @@ public class SongService {
         return new SongCreateResponse(savedSong.getId());
     }
 
-    public Song getSongMetadata(Long id) {
-        return songRepository.findById(id)
+    public SongDTO getSongMetadata(Long id) {
+        Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
+        return songManager.mapToSongDTO(song);
     }
 
     public SongDeleteResponse deleteSongsMetadata(String ids) {

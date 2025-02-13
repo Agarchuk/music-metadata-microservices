@@ -10,11 +10,12 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Getter
-@Setter
 @Table(name = "metadata")
 public class Song {
+
+    @Id
+    @Column(name = "id", unique = true)
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -30,8 +31,4 @@ public class Song {
 
     @Column(name = "year")
     private String year;
-
-    @Id
-    @Column(name = "id", unique = true)
-    private Long id;
 }

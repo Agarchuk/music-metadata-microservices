@@ -1,5 +1,13 @@
 package com.music.metadata.resource.services;
 
+import java.util.List;
+
+import com.music.metadata.resource.exceptions.IdViolationException;
+import org.apache.tika.Tika;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
 import com.music.metadata.resource.clients.SongsClient;
 import com.music.metadata.resource.dtos.ResourceUploadResponse;
 import com.music.metadata.resource.dtos.ResourcesDeleteResponse;
@@ -7,14 +15,8 @@ import com.music.metadata.resource.exceptions.ResourceNotFoundException;
 import com.music.metadata.resource.mappers.ResourceMapper;
 import com.music.metadata.resource.models.Resource;
 import com.music.metadata.resource.repositories.ResourceRepository;
-import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import org.apache.tika.Tika;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 @Service
 @Validated
@@ -28,7 +30,8 @@ public class ResourceServer {
     private final ResourceMapper resourceMapper;
     private final SongsClient mp3MetadataService;
 
-    public byte[] getResource(@Positive Long id) {
+    public byte[] getResource(Long id) {
+        validateId(id);
         Resource resource = resourceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found with id: " + id));
         return resource.getData();
@@ -74,6 +77,12 @@ public class ResourceServer {
     private void validateCsvLength(String ids) {
         if (ids.length() > 200) {
             throw new IllegalArgumentException("CSV string length must be less than 200 characters.");
+        }
+    }
+
+    private void validateId(Long id) {
+        if (id == null || id <= 0) {
+            throw new IdViolationException("ID must be a positive number.");
         }
     }
 }

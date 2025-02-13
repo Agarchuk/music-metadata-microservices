@@ -1,7 +1,7 @@
 package com.music.metadata.song.controllers;
 
+import com.music.metadata.song.dtos.SongDTO;
 import com.music.metadata.song.dtos.SongDeleteResponse;
-import com.music.metadata.song.models.Song;
 import com.music.metadata.song.services.SongService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class SongController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Song> getSongMetadata(@PathVariable Long id) {
+    public ResponseEntity<SongDTO> getSongMetadata(@PathVariable Long id) {
         return ResponseEntity.ok(metadataService.getSongMetadata(id));
     }
 
